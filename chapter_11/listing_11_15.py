@@ -38,7 +38,7 @@ class Connection:
         if self._state is not ConnectionState.INITIALIZED:
             print(f'_is_initialized: Connection not finished initializing, state is {self._state}')
             return False
-        print(f'_is_initialized: Connection is initialized!')
+        print('_is_initialized: Connection is initialized!')
         return True
 
 

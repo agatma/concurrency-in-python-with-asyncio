@@ -8,7 +8,7 @@ routes = web.RouteTableDef()
 
 @routes.get('/time')  # A
 async def time(request: Request) -> Response:
-    today = datetime.today()
+    today = datetime.now()
 
     result = {
         'month': today.month,

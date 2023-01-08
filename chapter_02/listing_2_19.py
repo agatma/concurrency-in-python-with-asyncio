@@ -5,7 +5,7 @@ from util import async_timed, delay
 @async_timed()
 async def cpu_bound_work() -> int:
     counter = 0
-    for i in range(100000000):
+    for _ in range(100000000):
         counter = counter + 1
     return counter
 

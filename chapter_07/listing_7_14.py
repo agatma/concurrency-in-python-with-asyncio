@@ -54,9 +54,8 @@ class LoadTester(Tk):
         if not self._queue.empty():
             percent_complete = self._queue.get()
             self._update_bar(percent_complete)
-        else:
-            if self._load_test:
-                self.after(self._refresh_ms, self._poll_queue)
+        elif self._load_test:
+            self.after(self._refresh_ms, self._poll_queue)
 
     def _start(self):  # F
         if self._load_test is None:

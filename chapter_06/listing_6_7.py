@@ -11,10 +11,6 @@ with open('googlebooks-eng-all-1gram-20120701-a', encoding='utf-8') as f:
         data = line.split('\t')
         word = data[0]
         count = int(data[2])
-        if word in freqs:
-            freqs[word] = freqs[word] + count
-        else:
-            freqs[word] = count
-
+        freqs[word] = freqs[word] + count if word in freqs else count
     end = time.time()
     print(f'{end-start:.4f}')

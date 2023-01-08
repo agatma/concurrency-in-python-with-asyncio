@@ -26,7 +26,7 @@ class HTTPGetClientProtocol(asyncio.Protocol):
         self._transport.write(self._get_request_bytes())  # C
 
     def data_received(self, data):
-        print(f'Data received!')
+        print('Data received!')
         self._response_buffer = self._response_buffer + data  # D
 
     def eof_received(self) -> Optional[bool]:

@@ -6,10 +6,7 @@ def map_frequency(text: str) -> Dict[str, int]:
     words = text.split(' ')
     frequencies = {}
     for word in words:
-        if word in frequencies:
-            frequencies[word] = frequencies[word] + 1
-        else:
-            frequencies[word] = 1
+        frequencies[word] = frequencies[word] + 1 if word in frequencies else 1
     return frequencies
 
 
@@ -17,10 +14,7 @@ def merge_dictionaries(first: Dict[str, int],
                        second: Dict[str, int]) -> Dict[str, int]:
     merged = first
     for key in second:
-        if key in merged:
-            merged[key] = merged[key] + second[key]
-        else:
-            merged[key] = second[key]
+        merged[key] = merged[key] + second[key] if key in merged else second[key]
     return merged
 
 

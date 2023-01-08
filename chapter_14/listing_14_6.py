@@ -2,8 +2,7 @@ from typing import Generator
 
 
 def generator(start: int, end: int):
-    for i in range(start, end):
-        yield i
+    yield from range(start, end)
 
 
 one_to_five = generator(1, 5)

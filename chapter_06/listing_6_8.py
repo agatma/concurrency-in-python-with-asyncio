@@ -15,10 +15,7 @@ def map_frequencies(chunk: List[str]) -> Dict[str, int]:
     counter = {}
     for line in chunk:
         word, _, count, _ = line.split('\t')
-        if counter.get(word):
-            counter[word] = counter[word] + int(count)
-        else:
-            counter[word] = int(count)
+        counter[word] = counter[word] + int(count) if counter.get(word) else int(count)
     return counter
 
 
@@ -26,10 +23,7 @@ def merge_dictionaries(first: Dict[str, int],
                        second: Dict[str, int]) -> Dict[str, int]:
     merged = first
     for key in second:
-        if key in merged:
-            merged[key] = merged[key] + second[key]
-        else:
-            merged[key] = second[key]
+        merged[key] = merged[key] + second[key] if key in merged else second[key]
     return merged
 
 
@@ -40,9 +34,12 @@ async def main(partition_size: int):
         tasks = []
         start = time.time()
         with concurrent.futures.ProcessPoolExecutor() as pool:
-            for chunk in partition(contents, partition_size):
-                tasks.append(loop.run_in_executor(pool, functools.partial(map_frequencies, chunk)))
-
+            tasks.extend(
+                loop.run_in_executor(
+                    pool, functools.partial(map_frequencies, chunk)
+                )
+                for chunk in partition(contents, partition_size)
+            )
             intermediate_results = await asyncio.gather(*tasks)
             final_result = functools.reduce(merge_dictionaries, intermediate_results)
 

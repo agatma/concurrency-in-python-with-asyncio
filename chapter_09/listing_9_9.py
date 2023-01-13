@@ -30,9 +30,11 @@ class UserCounter(WebSocketEndpoint):
             done, pending = await asyncio.wait(task_to_socket)
 
             for task in done:
-                if task.exception() is not None:
-                    if task_to_socket[task] in UserCounter.sockets:
-                        UserCounter.sockets.remove(task_to_socket[task])
+                if (
+                    task.exception() is not None
+                    and task_to_socket[task] in UserCounter.sockets
+                ):
+                    UserCounter.sockets.remove(task_to_socket[task])
 
 
 app = Starlette(routes=[WebSocketRoute('/counter', UserCounter)])

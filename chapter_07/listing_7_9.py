@@ -8,7 +8,7 @@ def sum_list(int_list: List[int]) -> int:
     print('Waiting to acquire lock...')
     with list_lock:
         print('Acquired lock.')
-        if len(int_list) == 0:
+        if not int_list:
             print('Finished summing.')
             return 0
         else:

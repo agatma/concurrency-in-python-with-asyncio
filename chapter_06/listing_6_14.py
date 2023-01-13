@@ -18,11 +18,7 @@ def map_frequencies(chunk: List[str]) -> Dict[str, int]:
     counter = {}
     for line in chunk:
         word, _, count, _ = line.split('\t')
-        if counter.get(word):
-            counter[word] = counter[word] + int(count)
-        else:
-            counter[word] = int(count)
-
+        counter[word] = counter[word] + int(count) if counter.get(word) else int(count)
     with map_progress.get_lock():
         map_progress.value += 1
 
@@ -45,13 +41,16 @@ async def main(partiton_size: int):
         map_progress = Value('i', 0)
 
         with ProcessPoolExecutor(initializer=init,
-                                 initargs=(map_progress,)) as pool:
+                                         initargs=(map_progress,)) as pool:
             total_partitions = len(contents) // partiton_size
             reporter = asyncio.create_task(progress_reporter(total_partitions))
 
-            for chunk in partition(contents, partiton_size):
-                tasks.append(loop.run_in_executor(pool, functools.partial(map_frequencies, chunk)))
-
+            tasks.extend(
+                loop.run_in_executor(
+                    pool, functools.partial(map_frequencies, chunk)
+                )
+                for chunk in partition(contents, partiton_size)
+            )
             counters = await asyncio.gather(*tasks)
 
             await reporter

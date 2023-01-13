@@ -27,9 +27,12 @@ async def main(partition_size: int):
         with concurrent.futures.ProcessPoolExecutor() as pool:
             start = time.time()
 
-            for chunk in partition(contents, partition_size):
-                tasks.append(loop.run_in_executor(pool, functools.partial(map_frequencies, chunk)))
-
+            tasks.extend(
+                loop.run_in_executor(
+                    pool, functools.partial(map_frequencies, chunk)
+                )
+                for chunk in partition(contents, partition_size)
+            )
             intermediate_results = await asyncio.gather(*tasks)
             final_result = await reduce(loop, pool, intermediate_results, 500)
 

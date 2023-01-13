@@ -18,13 +18,9 @@ try:
         for connection in connections:
             buffer = b''
 
-            while buffer[-2:] != b'\r\n':
-                data = connection.recv(2)
-                if not data:
-                    break
-                else:
-                    print(f'I got data: {data}!')
-                    buffer = buffer + data
+            while buffer[-2:] != b'\r\n' and (data := connection.recv(2)):
+                print(f'I got data: {data}!')
+                buffer += data
 
             print(f"All the data is: {buffer}")
 

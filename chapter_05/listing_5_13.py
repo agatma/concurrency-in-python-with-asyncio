@@ -1,6 +1,5 @@
 def positive_integers(until: int):
-    for integer in range(until):
-        yield integer
+    yield from range(until)
 
 
 positive_iterator = positive_integers(2)

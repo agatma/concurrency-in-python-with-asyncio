@@ -27,9 +27,10 @@ async def main():
     tasks = []
 
     with ThreadPoolExecutor() as pool:
-        for password in passwords:
-            tasks.append(loop.run_in_executor(pool, functools.partial(hash, password)))
-
+        tasks.extend(
+            loop.run_in_executor(pool, functools.partial(hash, password))
+            for password in passwords
+        )
     await asyncio.gather(*tasks)
 
 

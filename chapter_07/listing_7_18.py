@@ -3,7 +3,7 @@ import time
 
 data_points = 4000000000
 rows = 50
-columns = int(data_points / rows)
+columns = data_points // rows
 
 matrix = np.arange(data_points).reshape(rows, columns)
 
